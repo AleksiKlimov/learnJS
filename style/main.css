@@ -1,47 +1,91 @@
 @import url(./nullstyle.css);
-/*============================================================*/
-.event-block {
-  margin-top: 30px;
-  border: 1px solid rgba(0, 255, 255, 0.568);
-  padding: 20px;
+
+body {
+  background: linear-gradient(rgb(9, 71, 112), transparent 2px),
+    linear-gradient(90deg, rgb(9, 71, 112), transparent 2px);
+  background-size: 20px 20px;
+  background-position: center center;
 }
-.event-block__button {
-  border: 1px solid rgba(255, 0, 221, 0.705);
-  background: rgba(162, 0, 255, 0.562);
-  border-radius: 30px;
-  font-size: 26px;
-  padding: 10px 20px;
-  margin-right: 30px;
+.seabattle__block-text {
+  padding-top: 43px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-bottom: 21px;
 }
-.event-block__button:hover {
-  background: rgba(0, 162, 255, 0.562);
-  color: rgb(255, 255, 255);
-  box-shadow: 0px -5px 5px 0px rgba(11, 41, 104, 0.5);
-  font-size: 26px;
+.seabattle__block-text p {
+  font-size: 20px;
 }
-.event-block__input {
-  border: 1px solid rgb(17, 0, 255);
-  width: 200px;
-  height: 50px;
-  font-size: 26px;
+.seabattle__input-checkbox {
+  padding-left: 80px;
+  padding-top: 4px;
+  margin-bottom: 20px;
 }
-.event-block__input-text {
-  margin-top: 40px;
+.seabattle__input-checkbox input {
+  margin-right: 20px;
+}
+.seabattle__input-checkbox span {
+  font-size: 16px;
+}
+.seabattle__ship-container {
+  margin-bottom: 60px;
+  margin-left: 20px;
+  display: flex;
+  justify-content: center;
+}
+.ship__four-deck {
+  width: 80px;
+  height: 20px;
+  background: blue;
+  border: 1px solid black;
+  margin-right: 20px;
+}
+.ship__three-deck {
+  border: 1px solid black;
+  margin-right: 20px;
+  width: 60px;
+  height: 20px;
+  background: blue;
+}
+.ship__two-deck {
+  border: 1px solid black;
+  margin-right: 20px;
+  width: 40px;
+  height: 20px;
+  background: blue;
+}
+.ship__one-deck {
+  border: 1px solid black;
+  margin-right: 20px;
+  width: 20px;
+  height: 20px;
+  background: blue;
+}
+.seabattle__sea-container {
+  margin-left: 20px;
+  display: flex;
+  justify-content: space-around;
   margin-bottom: 40px;
 }
-.input-text__input {
-  border: 1px solid rgb(17, 0, 255);
+.seabattle__sea-human {
   width: 200px;
-  height: 50px;
-  font-size: 26px;
-  margin-right: 30px;
+  height: 200px;
+  border: 3px solid black;
 }
-.input-text__button {
-  border: 1px solid rgba(0, 204, 255, 0.705);
-  background: rgba(0, 255, 34, 0.562);
+.seabattle__sea-computer {
+  width: 200px;
+  height: 200px;
+  border: 3px solid black;
+}
+.seabattle__block-info-text {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.seabattle__button {
+  width: 100px;
+  height: 40px;
+  background-color: aqua;
+  border: 3px solid rgb(98, 19, 122);
   border-radius: 30px;
-  font-size: 26px;
-  margin-right: 30px;
-  width: 250px;
-  height: 70px;
 }
