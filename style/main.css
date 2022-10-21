@@ -1,10 +1,9 @@
 @import url(./nullstyle.css);
 
 body {
-  background: linear-gradient(rgb(9, 71, 112), transparent 2px),
-    linear-gradient(90deg, rgb(9, 71, 112), transparent 2px);
-  background-size: 20px 20px;
-  background-position: center center;
+}
+.wrapper {
+  width: 1150;
 }
 .seabattle__block-text {
   padding-top: 43px;
@@ -68,14 +67,22 @@ body {
   margin-bottom: 40px;
 }
 .seabattle__sea-human {
-  width: 200px;
-  height: 200px;
+  width: 206px;
+  height: 206px;
   border: 3px solid black;
+  display: flex;
+  flex-wrap: wrap;
+  /* background: linear-gradient(rgb(9, 71, 112), transparent 2px), */
+  /* linear-gradient(90deg, rgb(9, 71, 112), transparent 2px); */
+  /* background-size: 20px 20px; */
 }
 .seabattle__sea-computer {
-  width: 200px;
-  height: 200px;
+  width: 206px;
+  height: 206px;
   border: 3px solid black;
+  background: linear-gradient(rgb(9, 71, 112), transparent 2px),
+    linear-gradient(90deg, rgb(9, 71, 112), transparent 2px);
+  background-size: 20px 20px;
 }
 .seabattle__block-info-text {
   display: flex;
@@ -88,4 +95,13 @@ body {
   background-color: aqua;
   border: 3px solid rgb(98, 19, 122);
   border-radius: 30px;
+}
+.cube {
+  width: 20px;
+  height: 20px;
+  border: 1px solid blue;
+  margin-bottom: -2.8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }

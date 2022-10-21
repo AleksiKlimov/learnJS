@@ -17,7 +17,7 @@
         <p>2) press button START GAME</p>
       </div>
       <form action="#" class="seabattle__input-checkbox">
-        <input type="checkbox" checked />
+        <input id="instruction" type="checkbox" checked />
         <span>random placement of ships</span>
       </form>
       <div class="seabattle__ship-container">
@@ -37,8 +37,8 @@
         <div id="10" class="ship__one-deck ship"></div>
       </div>
       <div class="seabattle__sea-container">
-        <div class="seabattle__sea-human"></div>
-        <div class="seabattle__sea-computer"></div>
+        <div id="seabattle__sea-human" class="seabattle__sea-human"></div>
+        <div id="seabattle__sea-computer" class="seabattle__sea-computer"></div>
       </div>
       <div class="seabattle__block-info-text">
         <button class="seabattle__button">START GAME</button>
@@ -47,5 +47,7 @@
       </div>
     </div>
     <script src="./index.js"></script>
+    <script src="./info.js"></script>
+    <script src="./script.js"></script>
   </body>
 </html>

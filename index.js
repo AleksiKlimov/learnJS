@@ -1,41 +1,76 @@
-const elem = document.getElementById(1);
-let currentDroppable = null;
-elem.onpointerdown = function (event) {
-  let shiftX = event.clientX - elem.getBoundingClientRect().left;
-  let shiftY = event.clientY - elem.getBoundingClientRect().top;
-  console.log(event);
-  elem.style.position = "absolute";
-  elem.style.zIndex = 10;
-  document.body.append(elem);
-  moveAt(event.pageX, event.pageY);
-  function moveAt(pageX, pageY) {
-    elem.style.left = pageX - shiftX + "px";
-    elem.style.top = pageY - shiftY + "px";
-  }
-  function onMouseMove(event) {
-    moveAt(event.pageX, event.pageY);
-    elem.hidden = true;
-    let elemBelow = document.elementFromPoint(event.clientX, event.clientY);
-    elem.hidden = false;
-    if (!elemBelow) return;
-    let droppableBelow = elemBelow.closest(".seabattle__sea-human");
-    if (currentDroppable != droppableBelow) {
-      console.log(currentDroppable, droppableBelow);
-      if (currentDroppable) {
-        console.log(currentDroppable);
-      }
-      currentDroppable = droppableBelow;
-      if (currentDroppable) {
-        console.log(currentDroppable, droppableBelow);
-      }
-    }
-  }
-  document.addEventListener("pointermove", onMouseMove);
-  elem.onpointerup = function () {
-    document.removeEventListener("pointermove", onMouseMove);
-    elem.onpointerup = null;
+//flag start game after press button Play
+//and forbids location ships
+let startGame = false;
+//flag event listener manual location ships
+// and editing this location
+let isHandlerPlacement = false;
+//flag event Listener leave sea battle
+let isHandlerController = false;
+//flag blocking actions gamer on time shooting computer
+let compShot = false;
+
+const getElement = (id) => document.getElementById(id);
+
+const getCoordinates = (el) => {
+  const coords = el.getBoundingClientRect();
+  return {
+    left: coords.left,
+    right: coords.right,
+    top: coords.top,
+    bottom: coords.bottom,
   };
-  elem.ondragstart = function () {
-    return false;
-  };
+};
+// const humanField = getElement("seabattle__sea-human");
+
+// const computerField = getElement("seabattle__sea-computer");
+
+const field = {
+  fieldSide: 200,
+  ship: 20,
+  shipData: {
+    fourDeck: [1, 4],
+    threeDeck: [3, 2],
+    twoDeck: [3, 2],
+    oneDeck: [4, 1],
+  },
+  squadron: {},
+  matrix: [],
+  // fieldCoord: getCoordinates(humanField),
+};
+
+const fieldHuman = new Array(10).fill(0).map((el) => new Array(10).fill(0));
+
+const ships = {
+  fourDeck: {
+    length: 4,
+    hits: 0,
+    live: true,
+    count: 1,
+    hit(num) {},
+    isSunk() {},
+  },
+  threeDeck: {
+    length: 3,
+    hits: 0,
+    live: true,
+    count: 2,
+    hit(num) {},
+    isSunk() {},
+  },
+  twodeck: {
+    length: 2,
+    hits: 0,
+    live: true,
+    count: 3,
+    hit(num) {},
+    isSunk() {},
+  },
+  onedeck: {
+    length: 1,
+    hits: 0,
+    live: true,
+    count: 4,
+    hit(num) {},
+    isSunk() {},
+  },
 };
