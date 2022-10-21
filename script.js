@@ -28,11 +28,15 @@ const orientationPosition = () => {
 
 const borderShipMarker = (arrayInfoPosition) => {
   let x = arrayInfoPosition[0];
-  let y = arrayInfoPosition[1];
-  let orientation = arrayInfoPosition[2];
-  let length = arrayInfoPosition[3];
-  const matrixArray = arrayInfoPosition[4];
-
+  let y = arrayInfoPosition[2];
+  let orientation = arrayInfoPosition[3];
+  let length = arrayInfoPosition[4];
+  const matrixArray = arrayInfoPosition[5];
+  if (orientation) {
+    let coordsLastDeckX = arrayInfoPosition[1];
+  } else {
+    let coordsLastDeckY = arrayInfoPosition[1];
+  }
   if (!orientation) {
     if (y === 0 && x === 0) {
       for (let i = 0; i < length + 1; i++) {
@@ -41,7 +45,7 @@ const borderShipMarker = (arrayInfoPosition) => {
       matrixArray[y - 1][x] = 5;
       console.log("pere");
       return matrixArray;
-    } else if (y === 6 && x === 0) {
+    } else if (coordsLastDeckY === 6 && x === 0) {
       matrixArray[--y][x] = 5;
       matrixArray[y][++x] = 5;
       console.log(matrixArray);
@@ -65,6 +69,7 @@ const locationFunction = (matrixArray, length) => {
       }
       return borderShipMarker([
         x - length,
+        x,
         y,
         orientation,
         length,
@@ -76,6 +81,7 @@ const locationFunction = (matrixArray, length) => {
       }
       return borderShipMarker([
         x,
+        y,
         y - length,
         orientation,
         length,
