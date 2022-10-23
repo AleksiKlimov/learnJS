@@ -1,36 +1,37 @@
 const examinationLocationShips = (matrixArray, length) => {
-  let x = 3; //randomInteger();
-  let y = 3; //randomInteger();
+  let x = randomInteger();
+  let y = randomInteger();
   const immutableX = x;
   const immutableY = y;
-
   let orientation = 0; //orientationPosition();
   const markerArr = [];
-  console.log(2, "call exam", matrixArray[y][x]);
+  console.log(2, "call exam", markerArr.length);
   if ((orientation && x + length <= 10) || (!orientation && y + length <= 10)) {
     if (!orientation) {
-      matrixArray[y][x] === (5 || 4 || 3 || 2 || 1)
-        ? markerArr.push(1)
-        : markerArr;
-      matrixArray?.[--y]?.[x] === (4 || 3 || 2 || 1)
-        ? markerArr.push(1)
-        : markerArr;
-      for (let i = 0; i <= length + 1; i++) {
-        matrixArray?.[y]?.[x + 1] === (4 || 3 || 2 || 1)
-          ? markerArr.push(1)
-          : markerArr;
-        matrixArray?.[y++]?.[x - 1] === (4 || 3 || 2 || 1)
+      for (let i = 0; i < length; i++) {
+        matrixArray?.[y++]?.[x] === (5 || 4 || 3 || 2 || 1)
           ? markerArr.push(1)
           : markerArr;
       }
-      matrixArray?.[--y][x] === (4 || 3 || 2 || 1)
+      matrixArray?.[y]?.[x] === (5 || 4 || 3 || 2 || 1)
+        ? markerArr.push(1)
+        : markerArr;
+      for (let i = 0; i <= length + 1; i++) {
+        matrixArray?.[y]?.[x + 1] === (5 || 4 || 3 || 2 || 1)
+          ? markerArr.push(1)
+          : markerArr;
+        matrixArray?.[y--]?.[x - 1] === (5 || 4 || 3 || 2 || 1)
+          ? markerArr.push(1)
+          : markerArr;
+      }
+      matrixArray?.[++y]?.[x] === (5 || 4 || 3 || 2 || 1)
         ? markerArr.push(1)
         : markerArr;
 
-      console.log(markerArr);
+      console.log(matrixArray);
       if (markerArr.length) {
-        console.log(markerArr);
-        examinationLocationShips(matrixArray, length);
+        console.log(markerArr, matrixArray);
+        return examinationLocationShips(matrixArray, length);
       } else {
         console.log("call locationFunc", markerArr);
         return locationFunction(
@@ -43,14 +44,12 @@ const examinationLocationShips = (matrixArray, length) => {
       }
     }
   } else {
+    console.log(markerArr);
     return examinationLocationShips(matrixArray, length);
   }
 };
 
 const locationFunction = (matrixArray, length, orientation, x, y) => {
-  // console.log("info", matrixArray[y][x]);
-
-  // if ((orientation && x + length <= 10) || (!orientation && y + length <= 10)) {
   if (orientation) {
     for (let i = 0; i < length; i++) {
       matrixArray[y][x++] = length;
@@ -80,7 +79,7 @@ const locationFunction = (matrixArray, length, orientation, x, y) => {
     ]);
   }
 };
-const arr = [4, 3];
+const arr = [4, 3, 3, 2, 2, 2, 1, 1, 1, 1];
 arr.forEach((item) => {
   examinationLocationShips(fieldHumanArr, item);
 });
