@@ -5,7 +5,6 @@ const borderVerticalShipMarker = (arrayInfoPosition) => {
   const orientation = arrayInfoPosition[3];
   const length = arrayInfoPosition[4];
   const matrixArray = arrayInfoPosition[5];
-  console.log(x, y, lastPositionShips, length);
   //vertical orientation
   if (!orientation) {
     if (y === 0 && x === 0) {
