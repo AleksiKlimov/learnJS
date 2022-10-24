@@ -15,6 +15,32 @@
           1) select variant placement of ships or placement of ships manually
         </p>
         <p>2) press button START GAME</p>
+
+        <div class="seabattle__sea-container">
+          <div id="seabattle__sea-human" class="seabattle__sea-human"></div>
+          <div
+            id="seabattle__sea-computer"
+            class="seabattle__sea-computer"
+          ></div>
+        </div>
+        <div class="seabattle__block-info-text">
+          <button
+            data-start="start"
+            class="seabattle__button-start"
+            disabled="true"
+          >
+            START GAME
+          </button>
+          <button data-random="random" class="seabattle__button-random">
+            ramdom location
+          </button>
+          <button data-manual="manual" class="seabattle__button-manual">
+            manual location
+          </button>
+
+          <span></span>
+          <span></span>
+        </div>
       </div>
       <div class="seabattle__ship-container">
         <!--4 -->
@@ -32,25 +58,9 @@
         <div id="9" class="ship__one-deck ship"></div>
         <div id="10" class="ship__one-deck ship"></div>
       </div>
-      <div class="seabattle__sea-container">
-        <div id="seabattle__sea-human" class="seabattle__sea-human"></div>
-        <div id="seabattle__sea-computer" class="seabattle__sea-computer"></div>
-      </div>
-      <div class="seabattle__block-info-text">
-        <button data-start="start" class="seabattle__button">START GAME</button>
-        <button data-random="random" class="seabattle__button">
-          ramdom location
-        </button>
-        <button data-manual="manual" class="seabattle__button">
-          manual location
-        </button>
-
-        <span></span>
-        <span></span>
-      </div>
     </div>
     <script src="./script/addedShipsOnField.js"></script>
-
+    <script src="./script/gameLoop.js"></script>
     <script src="./script/getRandomPosShips.js"></script>
     <script src="./script/shipsMarker.js"></script>
     <script src="./script/createField.js"></script>

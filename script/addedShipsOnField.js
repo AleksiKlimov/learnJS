@@ -1,14 +1,11 @@
 const examinationLocationShips = (matrixArray, length) => {
   let x = randomInteger();
   let y = randomInteger();
-  // const immutableX = x;
-  // const immutableY = y;
   let orientation = orientationPosition();
   if ((orientation && x + length <= 10) || (!orientation && y + length <= 10)) {
     if (!orientation) {
       //exam inner ships-----------------
       for (let i = y; i < y + length; i++) {
-        // matrixArray[i][x] = 4;
         if (matrixArray?.[i]?.[x] >= 1 && matrixArray?.[i]?.[x] <= 5) {
           return examinationLocationShips(matrixArray, length);
         }
@@ -48,7 +45,6 @@ const examinationLocationShips = (matrixArray, length) => {
       if (matrixArray?.[y]?.[i - 1] >= 1 && matrixArray?.[y]?.[i - 1] <= 5) {
         return examinationLocationShips(matrixArray, length);
       }
-
       if (
         matrixArray?.[y + 1]?.[i - 1] >= 1 &&
         matrixArray?.[y + 1]?.[i - 1] <= 4
@@ -61,6 +57,7 @@ const examinationLocationShips = (matrixArray, length) => {
     return examinationLocationShips(matrixArray, length);
   }
 };
+
 const locationFunction = (matrixArray, length, orientation, x, y) => {
   if (orientation) {
     for (let i = 0; i < length; i++) {
