@@ -67,22 +67,14 @@ body {
   margin-bottom: 40px;
 }
 .seabattle__sea-human {
-  width: 206px;
-  height: 206px;
-  border: 3px solid black;
+  width: 200px;
+  height: 200px;
   display: flex;
   flex-wrap: wrap;
-  /* background: linear-gradient(rgb(9, 71, 112), transparent 2px), */
-  /* linear-gradient(90deg, rgb(9, 71, 112), transparent 2px); */
-  /* background-size: 20px 20px; */
 }
 .seabattle__sea-computer {
-  width: 206px;
-  height: 206px;
-  border: 3px solid black;
-  background: linear-gradient(rgb(9, 71, 112), transparent 2px),
-    linear-gradient(90deg, rgb(9, 71, 112), transparent 2px);
-  background-size: 20px 20px;
+  width: 200px;
+  height: 20px;
 }
 .seabattle__block-info-text {
   display: flex;
@@ -99,8 +91,7 @@ body {
 .cube {
   width: 20px;
   height: 20px;
-  border: 1px solid blue;
-  margin-bottom: -2.8px;
+  border: 0.5px solid blue;
   display: flex;
   justify-content: center;
   align-items: center;
