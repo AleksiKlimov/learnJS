@@ -12,6 +12,7 @@ const randomLocationShips = (fieldHuman) => {
 };
 
 document.addEventListener("click", (event) => {
+  console.log("click", event.target);
   const startButton = document.querySelector(".seabattle__button-start");
   const randomButton = document.querySelector(".seabattle__button-random");
   const manualButton = document.querySelector(".seabattle__button-manual");

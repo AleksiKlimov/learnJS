@@ -1,9 +1,10 @@
 const createInterfaceField = (fullField, humanSea) => {
-  for (let x = 0; x <= 9; x++) {
-    for (let y = 0; y <= 9; y++) {
+  for (let y = 0; y <= 9; y++) {
+    for (let x = 0; x <= 9; x++) {
       let humanDiv = document.createElement("div");
-      humanDiv.dataset.y = x;
-      humanDiv.dataset.x = y;
+
+      humanDiv.dataset.y = y;
+      humanDiv.dataset.x = x;
       humanDiv.dataset.value = fullField[y][x];
       humanDiv.classList.add("cube");
       humanDiv.textContent = humanDiv.dataset.value;

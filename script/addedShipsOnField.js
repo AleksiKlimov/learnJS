@@ -63,6 +63,7 @@ const locationFunction = (matrixArray, length, orientation, x, y) => {
     for (let i = 0; i < length; i++) {
       matrixArray[y][x++] = length;
     }
+    console.log("horiz");
     return borderHorizontShipMarker([
       x,
       y,
