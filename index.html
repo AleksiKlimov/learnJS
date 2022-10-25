@@ -24,11 +24,7 @@
           ></div>
         </div>
         <div class="seabattle__block-info-text">
-          <button
-            data-start="start"
-            class="seabattle__button-start"
-            disabled="true"
-          >
+          <button data-start="start" class="seabattle__button-start">
             START GAME
           </button>
           <button data-random="random" class="seabattle__button-random">
@@ -42,28 +38,9 @@
           <span></span>
         </div>
       </div>
-      <div class="seabattle__ship-container">
-        <!--4 -->
-        <div id="1" class="ship__four-deck ship"></div>
-        <!--3 -->
-        <div id="2" class="ship__three-deck ship"></div>
-        <div id="3" class="ship__three-deck ship"></div>
-        <!--2 -->
-        <div id="4" class="ship__two-deck ship"></div>
-        <div id="5" class="ship__two-deck ship"></div>
-        <div id="6" class="ship__two-deck ship"></div>
-        <!--1 -->
-        <div id="7" class="ship__one-deck ship"></div>
-        <div id="8" class="ship__one-deck ship"></div>
-        <div id="9" class="ship__one-deck ship"></div>
-        <div id="10" class="ship__one-deck ship"></div>
-      </div>
+      <div class="seabattle__ship-container"></div>
     </div>
-    <script src="./script/addedShipsOnField.js"></script>
-    <script src="./script/gameLoop.js"></script>
-    <script src="./script/getRandomPosShips.js"></script>
-    <script src="./script/shipsMarker.js"></script>
-    <script src="./script/createField.js"></script>
-    <script src="./script/main.js"></script>
+
+    <script src="./script/main.js" type="module"></script>
   </body>
 </html>

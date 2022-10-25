@@ -8,3 +8,4 @@ const orientationPosition = () => {
   //x ==1 ->
   //y ==0
 };
+export { randomInteger, orientationPosition };

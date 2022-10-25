@@ -1,3 +1,11 @@
+import { randomInteger, orientationPosition } from "./getRandomPosShips.js";
+import {
+  borderHorizontShipMarker,
+  borderVerticalShipMarker,
+} from "./shipsMarker.js";
+//=================================================================
+//=================================================================
+
 const examinationLocationShips = (matrixArray, length) => {
   let x = randomInteger();
   let y = randomInteger();
@@ -58,12 +66,15 @@ const examinationLocationShips = (matrixArray, length) => {
   }
 };
 
+//=================================================================
+
+//=================================================================
+
 const locationFunction = (matrixArray, length, orientation, x, y) => {
   if (orientation) {
     for (let i = 0; i < length; i++) {
       matrixArray[y][x++] = length;
     }
-    console.log("horiz");
     return borderHorizontShipMarker([
       x,
       y,
@@ -86,3 +97,4 @@ const locationFunction = (matrixArray, length, orientation, x, y) => {
     ]);
   }
 };
+export { examinationLocationShips, locationFunction };

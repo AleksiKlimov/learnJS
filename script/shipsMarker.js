@@ -54,3 +54,4 @@ const borderHorizontShipMarker = (arrayInfoPosition) => {
     return matrixArray;
   }
 };
+export { borderHorizontShipMarker, borderVerticalShipMarker };
