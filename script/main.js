@@ -8,8 +8,8 @@ import {
 // import { randomInteger, orientationPosition } from "./getRandomPosShips.js";
 
 //=====================================================================
-function Cell() {
-  return { id: 0, x: 0, y: 0, length: 0, hits: 0, ship: false };
+function createCell() {
+  return { id: 0, x: 0, y: 0, hits: 0, ship: false };
 }
 const escadraArray = () => {
   const arr = [4, 3, 3, 2, 2, 2, 1, 1, 1, 1];
@@ -23,7 +23,7 @@ const createInterfaceField = (humanSea) => {
     const innerArr = [];
     mainArr.push(innerArr);
     for (let x = 0; x <= 9; x++) {
-      const cell = new Cell();
+      const cell = createCell();
       cell.x = x;
       cell.y = y;
 
@@ -45,7 +45,7 @@ document.addEventListener("click", (event) => {
 
   if (event.target.dataset.random) {
   } else if (event.target.dataset.manual) {
-    showShips(escadraArray(), Cell);
+    showShips(escadraArray(), createCell);
   } else if (event.target.dataset.start) {
     const computerSea = document.querySelector(".seabattle__sea-computer");
     computerSea.innerHTML = "";
@@ -54,4 +54,4 @@ document.addEventListener("click", (event) => {
     gameLoop();
   }
 });
-export { escadraArray, Cell };
+export { escadraArray, createCell };

@@ -1,5 +1,5 @@
 const randomInteger = () => {
-  let randomIndex = 0 + Math.random() * (9 + 1 - 0);
+  const randomIndex = 0 + Math.random() * (9 + 1 - 0);
   return Math.floor(randomIndex);
 };
 const orientationPosition = () => {

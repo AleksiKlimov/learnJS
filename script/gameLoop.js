@@ -11,7 +11,6 @@ const logicHuman = () => {
 };
 
 const logic = (event) => {
-  console.log(event.target, event.currentTarget, event);
   if (event.target.dataset.value) {
   }
 };

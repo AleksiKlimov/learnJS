@@ -28,7 +28,10 @@ body {
 }
 .seabattle__ship-container {
   display: flex;
-  justify-content: center;
+  justify-content: space-around;
+  align-items: center;
+  max-width: 300px;
+  margin: 0px auto;
 }
 .ship__four-deck {
   width: 80px;
@@ -96,16 +99,19 @@ body {
   border-radius: 10px;
 }
 .cube {
-  max-width: 20px;
-  max-height: 20px;
-  width: 100%;
-  height: 100%;
+  width: 20px;
+  height: 20px;
   border: 0.5px solid blue;
   display: flex;
   justify-content: center;
   align-items: center;
   cursor: pointer;
 }
+.cell__container {
+}
 .hide {
   display: none;
+}
+.cell__container[data-id] {
+  background: rgb(0, 255, 0);
 }
