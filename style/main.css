@@ -115,3 +115,6 @@ body {
 .cell__container[data-id] {
   background: rgb(0, 255, 0);
 }
+.horizontal {
+  transform: rotate(90deg);
+}

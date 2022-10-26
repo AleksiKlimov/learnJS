@@ -1,43 +1,40 @@
-import { gameLoop } from "./gameLoop.js";
 import { showShips } from "./dragNDrop.js";
-import {
-  examinationLocationShips,
-  locationFunction,
-} from "./addedShipsOnField.js";
+
 //=====================================================
-// import { randomInteger, orientationPosition } from "./getRandomPosShips.js";
 
 //=====================================================================
 function createCell() {
-  return { id: 0, x: 0, y: 0, hits: 0, ship: false };
+  return { id: 0, x: 0, y: 0, direction: null, hits: 0, ship: false };
 }
 const escadraArray = () => {
   const arr = [4, 3, 3, 2, 2, 2, 1, 1, 1, 1];
   return arr;
 };
 
-const createInterfaceField = (humanSea) => {
+const createInterfaceField = (battleField) => {
   const mainArr = [];
-  console.log(mainArr);
   for (let y = 0; y <= 9; y++) {
     const innerArr = [];
     mainArr.push(innerArr);
     for (let x = 0; x <= 9; x++) {
       const cell = createCell();
-      cell.x = x;
       cell.y = y;
-
+      cell.x = x;
       let newDiv = document.createElement("div");
       newDiv.classList.add("cube");
       newDiv.dataset.y = y;
       newDiv.dataset.x = x;
-      humanSea.append(newDiv);
+      cell.div = newDiv;
+      battleField.append(newDiv);
       mainArr[y][x] = cell;
     }
   }
-  return escadraArray(mainArr);
+  return saveConditionMainArray(mainArr);
 };
 
+const saveConditionMainArray = (mainArr) => {
+  return mainArr;
+};
 document.addEventListener("click", (event) => {
   const startButton = document.querySelector(".seabattle__button-start");
   const randomButton = document.querySelector(".seabattle__button-random");
@@ -45,13 +42,15 @@ document.addEventListener("click", (event) => {
 
   if (event.target.dataset.random) {
   } else if (event.target.dataset.manual) {
+    const humanField = document.querySelector(".seabattle__sea-human");
+    humanField.innerHTML = "";
+    createInterfaceField(humanField);
+
     showShips(escadraArray(), createCell);
   } else if (event.target.dataset.start) {
-    const computerSea = document.querySelector(".seabattle__sea-computer");
-    computerSea.innerHTML = "";
-    // const fullField = randomLocationShips(fieldHuman);
-    createInterfaceField(computerSea);
-    gameLoop();
+    const computerField = document.querySelector(".seabattle__sea-computer");
+    computerField.innerHTML = "";
+    createInterfaceField(computerField);
   }
 });
 export { escadraArray, createCell };
