@@ -1,5 +1,6 @@
 import { createCell } from "./main.js";
 import { examPosition } from "./addedShipsOnField.js";
+//========================================================================
 const generateUniqId = () => {
   let randomIndex = 0 + Math.random() * (20 + 1 - 0);
   randomIndex = Math.floor(randomIndex);
@@ -12,7 +13,9 @@ const generateUniqId = () => {
   arrId.push(randomIndex);
   return randomIndex;
 };
-const showShips = (escadraArray) => {
+
+//================================================================================
+const showShips = (escadraArray, mainArrHuman) => {
   const arrShips = [];
   const shipVisualContainer = document.querySelector(
     ".seabattle__ship-container"
@@ -41,12 +44,12 @@ const showShips = (escadraArray) => {
     arrShips.push(innerArr);
   });
 
-  return dragNDrop(arrShips);
+  return dragNDrop(arrShips, mainArrHuman);
 };
 
 //=======================================================================
 //=======================================================================
-const dragNDrop = (arrShips) => {
+const dragNDrop = (arrShips, mainArrHuman) => {
   const shipContainer = document.querySelectorAll(".cell__container");
   for (const oneShip of shipContainer) {
     oneShip.onpointerdown = () => {
@@ -82,12 +85,11 @@ const dragNDrop = (arrShips) => {
         event.clientY
       );
       if (targetElems[3].hasAttribute("id")) {
-        const currentShip = targetElems[1];
-        const coordinateOnField = targetElems[2];
+        const arrElems = targetElems;
         oneShip.style.position = "absolute";
         document.onpointermove = null;
         document.onkeydown = null;
-        return examPosition(coordinateOnField, arrShips, currentShip);
+        return examPosition(arrShips, arrElems, mainArrHuman);
       } else {
         oneShip.style.position = "static";
         document.onpointermove = null;

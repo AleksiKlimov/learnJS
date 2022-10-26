@@ -1,5 +1,4 @@
 import { showShips } from "./dragNDrop.js";
-
 //=====================================================
 
 //=====================================================================
@@ -18,23 +17,20 @@ const createInterfaceField = (battleField) => {
     mainArr.push(innerArr);
     for (let x = 0; x <= 9; x++) {
       const cell = createCell();
-      cell.y = y;
-      cell.x = x;
-      let newDiv = document.createElement("div");
+      const newDiv = document.createElement("div");
       newDiv.classList.add("cube");
       newDiv.dataset.y = y;
       newDiv.dataset.x = x;
+      cell.y = y;
+      cell.x = x;
       cell.div = newDiv;
       battleField.append(newDiv);
       mainArr[y][x] = cell;
     }
   }
-  return saveConditionMainArray(mainArr);
-};
-
-const saveConditionMainArray = (mainArr) => {
   return mainArr;
 };
+
 document.addEventListener("click", (event) => {
   const startButton = document.querySelector(".seabattle__button-start");
   const randomButton = document.querySelector(".seabattle__button-random");
@@ -44,13 +40,12 @@ document.addEventListener("click", (event) => {
   } else if (event.target.dataset.manual) {
     const humanField = document.querySelector(".seabattle__sea-human");
     humanField.innerHTML = "";
-    createInterfaceField(humanField);
-
-    showShips(escadraArray(), createCell);
+    const mainArrHuman = createInterfaceField(humanField);
+    showShips(escadraArray(), mainArrHuman);
   } else if (event.target.dataset.start) {
     const computerField = document.querySelector(".seabattle__sea-computer");
     computerField.innerHTML = "";
-    createInterfaceField(computerField);
+    const mainArrComputer = createInterfaceField(computerField);
   }
 });
 export { escadraArray, createCell };
