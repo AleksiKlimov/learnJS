@@ -106,15 +106,24 @@ body {
   justify-content: center;
   align-items: center;
   cursor: pointer;
+  background: rgb(115, 255, 0);
 }
 .cell__container {
 }
 .hide {
   display: none;
 }
-.cell__container[data-id] {
-  background: rgb(0, 255, 0);
+.ship {
+  width: 20px;
+  height: 20px;
+  border: 0.5px solid blue;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  background: red;
 }
+
 .horizontal {
   transform: rotate(90deg);
 }

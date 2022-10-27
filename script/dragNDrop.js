@@ -1,21 +1,11 @@
 import { createCell } from "./main.js";
 import { examPosition } from "./addedShipsOnField.js";
+import { escadraArray } from "./main.js";
 //========================================================================
-const generateUniqId = () => {
-  let randomIndex = 0 + Math.random() * (20 + 1 - 0);
-  randomIndex = Math.floor(randomIndex);
-  const arrId = [];
-  for (let i = 0; i < arrId.length; i++) {
-    if (arrId[i] === randomIndex) {
-      return generateUniqId();
-    }
-  }
-  arrId.push(randomIndex);
-  return randomIndex;
-};
 
 //================================================================================
 const showShips = (escadraArray, mainArrHuman) => {
+  let counter = 0;
   const arrShips = [];
   const shipVisualContainer = document.querySelector(
     ".seabattle__ship-container"
@@ -25,28 +15,34 @@ const showShips = (escadraArray, mainArrHuman) => {
     const innerArr = [];
     const newShipContainer = document.createElement("div");
     newShipContainer.classList.add("cell__container");
-    newShipContainer.dataset.id = generateUniqId();
+    newShipContainer.dataset.id = counter++;
     shipVisualContainer.append(newShipContainer);
     for (let i = 0; i < element; i++) {
       const cell = createCell();
-      cell.direction = "column";
       const newDeck = document.createElement("div");
-      newDeck.classList.add("cube");
-      newDeck.dataset.y = i;
-      newDeck.dataset.x = 0;
+      // newDeck.classList.add("cube");
+      // newDeck.classList.add("ship");
+
       cell.div = newDeck;
-      cell.y = i + 1;
-      cell.x = 0;
-      cell.id = newShipContainer.dataset.id;
+      cell.div.classList.add("ship");
       newShipContainer.append(newDeck);
       innerArr.push(cell);
     }
     arrShips.push(innerArr);
   });
-
   return dragNDrop(arrShips, mainArrHuman);
 };
 
+document.addEventListener("pointerup", (ev) => {
+  if (ev.target.classList.contains("cube")) {
+    const { x, y } = ev.target.dataset;
+    const el = window.mainArr[y][x];
+    el.div.classList.add("ship");
+    el.ship = true;
+    // ev.target.classList.add("ship");
+    console.log(el);
+  }
+});
 //=======================================================================
 //=======================================================================
 const dragNDrop = (arrShips, mainArrHuman) => {
@@ -54,6 +50,7 @@ const dragNDrop = (arrShips, mainArrHuman) => {
   for (const oneShip of shipContainer) {
     oneShip.onpointerdown = () => {
       oneShip.style.position = "fixed";
+      oneShip.style.pointerEvents = "none";
       document.onkeydown = (event) => {
         if (event.code === "Space") {
           oneShip.classList.toggle("horizontal");
@@ -72,8 +69,10 @@ const dragNDrop = (arrShips, mainArrHuman) => {
           oneShip.style.position = "fixed";
           oneShip.style.top = event.pageY - oneShip.offsetHeight / 2 + "px";
           oneShip.style.left = event.pageX + "px";
-          if (oneShip.childNodes.length > 2) {
+          if (oneShip.childNodes.length === 4) {
             oneShip.style.left = event.pageX + oneShip.offsetWidth + "px";
+          } else if (oneShip.childNodes.length === 3) {
+            oneShip.style.left = event.pageX + oneShip.offsetWidth / 2 + "px";
           }
         }
         event.preventDefault();
@@ -84,14 +83,15 @@ const dragNDrop = (arrShips, mainArrHuman) => {
         event.clientX,
         event.clientY
       );
-      if (targetElems[3].hasAttribute("id")) {
+      if (targetElems[3].getAttribute("id") === "seabattle__sea-human") {
         const arrElems = targetElems;
         oneShip.style.position = "absolute";
         document.onpointermove = null;
         document.onkeydown = null;
-        return examPosition(arrShips, arrElems, mainArrHuman);
+        return examPosition(arrShips, arrElems, mainArrHuman, oneShip);
       } else {
         oneShip.style.position = "static";
+        oneShip.className = "cell__container";
         document.onpointermove = null;
         document.onkeydown = null;
       }
