@@ -26,7 +26,15 @@ body {
 .seabattle__input-checkbox span {
   font-size: 16px;
 }
-.seabattle__ship-container {
+.seabattle__escadra-human {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  max-width: 300px;
+  margin: 0px auto;
+  margin-bottom: 40px;
+}
+.seabattle__escadra-computer {
   display: flex;
   justify-content: space-around;
   align-items: center;
@@ -98,7 +106,7 @@ body {
   border: 3px solid rgb(98, 19, 122);
   border-radius: 10px;
 }
-.cube {
+.cell__computer {
   width: 20px;
   height: 20px;
   border: 0.5px solid blue;
@@ -108,12 +116,24 @@ body {
   cursor: pointer;
   background: rgb(115, 255, 0);
 }
-.cell__container {
+.cell__gamer {
+  width: 20px;
+  height: 20px;
+  border: 0.5px solid blue;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  background: rgb(0, 238, 255);
+}
+.cell__container-human {
+}
+.cell__container-computer {
 }
 .hide {
   display: none;
 }
-.ship {
+.ship__computer {
   width: 20px;
   height: 20px;
   border: 0.5px solid blue;
@@ -122,6 +142,16 @@ body {
   align-items: center;
   cursor: pointer;
   background: red;
+}
+.ship__gamer {
+  width: 20px;
+  height: 20px;
+  border: 0.5px solid blue;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  background: rgb(36, 250, 150);
 }
 
 .horizontal {
