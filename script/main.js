@@ -1,4 +1,9 @@
-import { showShips } from "./dragNDrop.js";
+import { showShips, dragNDrop } from "./dragNDrop.js";
+import {
+  randomPositionShip,
+  randomOrientation,
+  randomCoordinates,
+} from "./getRandomPosShips.js";
 //=====================================================
 
 //=====================================================================
@@ -22,33 +27,44 @@ const createInterfaceField = (battleField) => {
     const innerArr = [];
     mainArr.push(innerArr);
     for (let x = 0; x <= 9; x++) {
+      const $filedCell = document.createElement("div");
+      $filedCell.classList.add("cube");
+      $filedCell.dataset.y = y;
+      $filedCell.dataset.x = x;
       const cell = createCell();
-      const newDiv = document.createElement("div");
       // newDiv.classList.add("cube");
-      newDiv.dataset.y = y;
-      newDiv.dataset.x = x;
       cell.y = y;
       cell.x = x;
-      cell.div = newDiv;
-      cell.div.classList.add("cube");
+      cell.div = $filedCell;
 
-      battleField.append(newDiv);
+      battleField.append($filedCell);
       mainArr[y][x] = cell;
     }
   }
-  window.mainArr = mainArr;
   return mainArr;
 };
 //event listener main buttons games ====================================================
 document.addEventListener("click", (event) => {
   if (event.target.dataset.random) {
-  } else if (event.target.dataset.manual) {
+    //RANDOM================================================
     humanField.innerHTML = "";
     const mainArrHuman = createInterfaceField(humanField);
-    showShips(escadraArray(), mainArrHuman);
+    const escadraHuman = showShips(escadraArray(), true);
+    randomPositionShip(escadraHuman, mainArrHuman);
+    // dragNDrop(escadraHuman, mainArrHuman);
+  } else if (event.target.dataset.manual) {
+    //MANUAL=================================================
+    humanField.innerHTML = "";
+    const mainArrHuman = createInterfaceField(humanField);
+    const escadraHuman = showShips(escadraArray(), true);
+    dragNDrop(escadraHuman, mainArrHuman);
   } else if (event.target.dataset.start) {
+    //START==========================================
+
     computerField.innerHTML = "";
-    createInterfaceField(computerField);
+    const mainArrComputer = createInterfaceField(computerField);
+    const escadraComputer = showShips(escadraArray(), false);
+    const positionFullShip = randomPositionShip(escadraComputer);
   }
 });
 export { escadraArray, createCell };
