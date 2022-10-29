@@ -11,18 +11,27 @@ const $visualShipEscadraComputer = document.querySelector(
 const flagTrue = true;
 const flagFalse = false;
 
+//======================================//
 const createDefaultObj = () => {
   return {
-    x: 0,
-    y: 0,
     direction: null,
     ship: false,
   };
 };
 
 const createDefaultEscadra = (() => {
-  return [4, 3, 3, 2, 2, 2, 1, 1, 1, 1];
+  return [4, 3, 3];
 })();
+
+const getRandomMatrixValue = (length) => {
+  const randomValue = Math.random() * (10 - length);
+  return Math.round(randomValue);
+};
+
+const getRandomShipOrientation = () => {
+  const randomValue = Math.random() * 1;
+  return Math.round(randomValue) ? "row" : "column";
+};
 
 const createBattleField = ($html, flag) => {
   const outerMatrix = [];
@@ -52,10 +61,11 @@ const createBattleField = ($html, flag) => {
 
 const createVisualShips = (escadraShips, $html, flag) => {
   const arrOuterShips = [];
+  let count = 1;
 
   for (let y = 0; y < escadraShips.length; y++) {
+    count++;
     const arrInnerShips = [];
-
     const $shipContainer = document.createElement("div");
     flag
       ? $shipContainer.classList.add("cell__container-human")
@@ -73,10 +83,11 @@ const createVisualShips = (escadraShips, $html, flag) => {
       //create obj ============================================================
       //====================================
       const defaultObj = createDefaultObj();
-      defaultObj.y = y;
-      defaultObj.x = x;
+      // defaultObj.y = y;
+      // defaultObj.x = x;
       defaultObj.elem = $elem;
-      defaultObj.direction = defaultObj.ship = true;
+      defaultObj.ship = true;
+      defaultObj.id = count;
       $shipContainer.append($elem);
       arrInnerShips.push(defaultObj);
     }
@@ -88,7 +99,7 @@ const createVisualShips = (escadraShips, $html, flag) => {
 };
 //==================================================================
 //manual
-const manualVariant = createBattleField($fieldHuman, flagTrue);
+let fieldForHuman = createBattleField($fieldHuman, flagTrue);
 const manualVisualShips = createVisualShips(
   createDefaultEscadra,
   $visualShipEscadraHuman,
@@ -112,10 +123,93 @@ const escadraHiddenForComputer = createVisualShips(
   flagFalse
 );
 //=====================================================================
+const randomLocationShips = (shipsArray, matrixArray) => {
+  const collection = document.querySelector(".seabattle__sea-human");
+  for (let i = 0; i < shipsArray.length; i++) {
+    console.log(shipsArray);
+
+    let y = getRandomMatrixValue(shipsArray[i].length);
+    let x = getRandomMatrixValue(shipsArray[i].length);
+    const shipOrientation = getRandomShipOrientation(shipsArray[i].length);
+    console.log(y, x, shipOrientation);
+
+    if (shipOrientation === "row") {
+      for (let k = x; k < x + shipsArray[i].length; k++) {
+        if (matrixArray[y][k].ship) {
+          console.log("call");
+          console.log(shipsArray[i]);
+          return randomLocationShips(
+            [shipsArray[i], ...shipsArray],
+            fieldForHuman
+          );
+        }
+      }
+      for (let j = x; j < x + shipsArray[i].length; j++) {
+        if (!matrixArray[y][j].ship) {
+          let indexElem;
+          y === 0
+            ? (indexElem = String(j))
+            : (indexElem = String(y) + String(j));
+          collection.children[indexElem].classList.add("ship__gamer");
+          matrixArray[y][j].direction = "row";
+          matrixArray[y][j].elem = shipsArray[i][0].elem;
+        }
+      }
+      for (let j = x; j <= x + shipsArray[i].length + 1; j++) {
+        matrixArray?.[y - 1]?.[j - 1]
+          ? (matrixArray[y - 1][j - 1].ship = true)
+          : matrixArray[0][0];
+        matrixArray?.[y]?.[j - 1]
+          ? (matrixArray[y][j - 1].ship = true)
+          : matrixArray[0][0];
+        matrixArray?.[y + 1]?.[j - 1]
+          ? (matrixArray[y + 1][j - 1].ship = true)
+          : matrixArray[0][0];
+      }
+    } else if (shipOrientation === "column") {
+      for (let j = y; j < y + shipsArray[i].length; j++) {
+        if (matrixArray[j][x].ship) {
+          console.log("call");
+          console.log(shipsArray[i]);
+          return randomLocationShips(
+            [shipsArray[i], ...shipsArray],
+            fieldForHuman
+          );
+        }
+      }
+      for (let j = y; j < y + shipsArray[i].length; j++) {
+        if (!matrixArray[j][x].ship) {
+          let indexElem;
+          j === 0 ? (indexElem = x) : (indexElem = String(j) + String(x));
+          collection.children[indexElem].classList.add("ship__gamer");
+          matrixArray[j][x].ship = true;
+          matrixArray[j][x].direction = "column";
+          matrixArray[j][x].elem = shipsArray[i][0].elem;
+        }
+      }
+      for (let j = y; j <= y + shipsArray[i].length + 1; j++) {
+        matrixArray?.[j - 1]?.[x - 1]
+          ? (matrixArray[j - 1][x - 1].ship = true)
+          : matrixArray[0][0];
+        matrixArray?.[j - 1]?.[x]
+          ? (matrixArray[j - 1][x].ship = true)
+          : matrixArray[0][0];
+        matrixArray?.[j - 1]?.[x + 1]
+          ? (matrixArray[j - 1][x + 1].ship = true)
+          : matrixArray[0][0];
+      }
+    }
+    shipsArray.shift();
+  }
+  console.log(shipsArray, matrixArray);
+};
 
 document.onclick = (event) => {
   if (event.target.dataset.manual) {
   } else if (event.target.dataset.random) {
+    $fieldHuman.innerHTML = "";
+    fieldForHuman = createBattleField($fieldHuman, flagTrue);
+    randomLocationShips(manualVisualShips, fieldForHuman);
   } else if (event.target.dataset.start) {
   }
 };
