@@ -128,69 +128,45 @@ const randomLocationShips = (shipsArray, matrixArray, flag) => {
     const y = getRandomMatrixValue(shipsArray[i].length);
     const x = getRandomMatrixValue(shipsArray[i].length);
     const shipOrientation = getRandomShipOrientation(shipsArray[i].length);
+    //=
+    const dx = shipOrientation === "row";
+    const dy = shipOrientation === "column";
+    //==
+    for (let j = 0; j < shipsArray[i].length; j++) {
+      const cx = +x + dx * j;
+      const cy = +y + dy * j;
 
-    if (shipOrientation === "row") {
-      for (let k = x; k < x + shipsArray[i].length; k++) {
-        if (matrixArray[y][k].ship) {
-          const arrReturn = shipsArray.slice(i);
-          return randomLocationShips(arrReturn, matrixArray, flag);
-        }
+      if (matrixArray[cy][cx].ship) {
+        const arrReturn = shipsArray.slice(i);
+        return randomLocationShips(arrReturn, matrixArray, flag);
       }
-
-      for (let j = x; j < x + shipsArray[i].length; j++) {
-        let indexElem;
-        y === 0 ? (indexElem = String(j)) : (indexElem = String(y) + String(j));
-        flag
-          ? $fieldHuman.children[indexElem].classList.add("ship__gamer")
-          : $fieldComputer.children[indexElem].classList.add("ship__computer");
-
-        matrixArray[y][j].direction = "row";
-        matrixArray[y][j].elem = shipsArray[i][0].elem;
+    }
+    //
+    for (let cy = y - 1; cy < +y + shipsArray[i].length * dy + dx + 1; cy++) {
+      for (let cx = x - 1; cx < +x + shipsArray[i].length * dx + dy + 1; cx++) {
+        matrixArray?.[cy]?.[cx]
+          ? ((matrixArray[cy][cx].free = false),
+            (matrixArray[cy][cx].ship = true))
+          : fieldForHuman;
       }
-      for (let j = x; j <= x + shipsArray[i].length + 1; j++) {
-        matrixArray?.[y - 1]?.[j - 1]
-          ? (matrixArray[y - 1][j - 1].ship = true)
-          : matrixArray[y][x];
-        matrixArray?.[y]?.[j - 1]
-          ? (matrixArray[y][j - 1].ship = true)
-          : matrixArray[y][x];
-        matrixArray?.[y + 1]?.[j - 1]
-          ? (matrixArray[y + 1][j - 1].ship = true)
-          : matrixArray[y][x];
-      }
-    } else if (shipOrientation === "column") {
-      for (let j = y; j < y + shipsArray[i].length; j++) {
-        if (matrixArray[j][x].ship) {
-          const arrReturn = shipsArray.slice(i);
-          return randomLocationShips(arrReturn, matrixArray, flag);
-        }
-      }
-      for (let j = y; j < y + shipsArray[i].length; j++) {
-        if (!matrixArray[j][x].ship) {
-          let indexElem;
-          j === 0 ? (indexElem = x) : (indexElem = String(j) + String(x));
-          flag
-            ? $fieldHuman.children[indexElem].classList.add("ship__gamer")
-            : $fieldComputer.children[indexElem].classList.add(
-                "ship__computer"
-              );
-
-          matrixArray[j][x].ship = true;
-          matrixArray[j][x].direction = "column";
-          matrixArray[j][x].elem = shipsArray[i][0].elem;
-        }
-      }
-      for (let j = y; j <= y + shipsArray[i].length + 1; j++) {
-        matrixArray?.[j - 1]?.[x - 1]
-          ? (matrixArray[j - 1][x - 1].ship = true)
-          : matrixArray[y][x];
-        matrixArray?.[j - 1]?.[x]
-          ? (matrixArray[j - 1][x].ship = true)
-          : matrixArray[y][x];
-        matrixArray?.[j - 1]?.[x + 1]
-          ? (matrixArray[j - 1][x + 1].ship = true)
-          : matrixArray[y][x];
-      }
+    }
+    for (let k = 0; k < shipsArray[i].length; k++) {
+      const cx = +x + dx * k;
+      const cy = +y + dy * k;
+      let indexElem;
+      +cy === 0 && dx
+        ? (indexElem = String(cx))
+        : (indexElem = String(cy) + String(cx));
+      +cy === 0 && dy
+        ? (indexElem = String(cx))
+        : (indexElem = String(cy) + String(cx));
+      flag
+        ? $fieldHuman.children?.[+indexElem]?.classList.add("ship__gamer")
+        : $fieldComputer.children?.[+indexElem]?.classList.add(
+            "ship__computer"
+          );
+      matrixArray[cy][cx].direction = shipOrientation;
+      matrixArray[cy][cx].elem = shipsArray[i][0].elem;
     }
   }
   return matrixArray;
@@ -207,7 +183,6 @@ const examManualLocation = (ship, fieldForHuman, y, x, height) => {
   for (let i = 0; i < height; i++) {
     const cx = +x + dx * i;
     const cy = +y + dy * i;
-    console.log(cx, cy);
     if (fieldForHuman[cy][cx].ship) {
       $visualShipEscadraHuman.append($element),
         ($element.style.position = "static");
@@ -218,19 +193,18 @@ const examManualLocation = (ship, fieldForHuman, y, x, height) => {
   for (let i = 0; i < height; i++) {
     const cx = +x + dx * i;
     const cy = +y + dy * i;
-    fieldForHuman[cy][cx].ship = true;
     fieldForHuman[cy][cx].direction = direction;
-    // fieldForHuman[cy][cx].elem =
-    //   fieldForHuman[cy][cx].elem.classList.add("ship__gamer");
   }
-  for (let cy = y - 1; cy < y + 2; y++) {
-    for (let cx = x - 1; cx < x + height + 1; x++) {
-      console.log(cy, cx);
-      // if (fieldForHuman?.[cy]?.[cx]) {
-      // fieldForHuman[cy][cx].free = false;
-      // }
+  console.log(y, x);
+  for (let cy = y - 1; cy < +y + height * dy + dx + 1; cy++) {
+    for (let cx = x - 1; cx < +x + height * dx + dy + 1; cx++) {
+      fieldForHuman?.[cy]?.[cx]
+        ? ((fieldForHuman[cy][cx].free = false),
+          (fieldForHuman[cy][cx].ship = true))
+        : fieldForHuman;
     }
   }
+  console.log(fieldForHuman);
 };
 
 $visualShipEscadraHuman.onpointerdown = (event) => {
@@ -282,7 +256,6 @@ $visualShipEscadraHuman.onpointerdown = (event) => {
         if ($fieldElem[3].id === "seabattle__sea-human") {
           const y = $fieldElem[2].dataset.y;
           const x = $fieldElem[2].dataset.x;
-          console.log(y, x);
           if ($fieldElem[1].className === "cell__container-human") {
             if (+$fieldElem[2].dataset.y + +height > 10) {
               $VisualShip.style.position = "static";
