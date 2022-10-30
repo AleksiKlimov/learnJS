@@ -19,9 +19,9 @@ const createDefaultObj = () => {
   };
 };
 
-const createDefaultEscadra = (() => {
-  return [4, 3, 3];
-})();
+const createDefaultEscadra = () => {
+  return [4, 3, 3, 2, 2, 2, 1, 1, 1, 1];
+};
 
 const getRandomMatrixValue = (length) => {
   const randomValue = Math.random() * (10 - length);
@@ -94,17 +94,16 @@ const createVisualShips = (escadraShips, $html, flag) => {
     $html.append($shipContainer);
     arrOuterShips.push(arrInnerShips);
   }
-  console.log(arrOuterShips);
   return arrOuterShips;
 };
 //==================================================================
 //manual
-let fieldForHuman = createBattleField($fieldHuman, flagTrue);
-const manualVisualShips = createVisualShips(
-  createDefaultEscadra,
-  $visualShipEscadraHuman,
-  flagTrue
-);
+const fieldForHuman = createBattleField($fieldHuman, flagTrue);
+// const manualVisualShips = createVisualShips(
+//   createDefaultEscadra(),
+//   $visualShipEscadraHuman,
+//   flagTrue
+// );
 
 //===================================================================
 //random
@@ -117,71 +116,64 @@ const manualVisualShips = createVisualShips(
 //====================================================================
 //start
 const fieldForComputer = createBattleField($fieldComputer, flagFalse);
-const escadraHiddenForComputer = createVisualShips(
-  createDefaultEscadra,
-  $visualShipEscadraComputer,
-  flagFalse
-);
+// const escadraHiddenForComputer = createVisualShips(
+//   createDefaultEscadra(),
+//   $visualShipEscadraComputer,
+//   flagFalse
+// );
 //=====================================================================
-const randomLocationShips = (shipsArray, matrixArray) => {
-  const collection = document.querySelector(".seabattle__sea-human");
+const randomLocationShips = (shipsArray, matrixArray, flag) => {
   for (let i = 0; i < shipsArray.length; i++) {
-    console.log(shipsArray);
-
-    let y = getRandomMatrixValue(shipsArray[i].length);
-    let x = getRandomMatrixValue(shipsArray[i].length);
+    const y = getRandomMatrixValue(shipsArray[i].length);
+    const x = getRandomMatrixValue(shipsArray[i].length);
     const shipOrientation = getRandomShipOrientation(shipsArray[i].length);
-    console.log(y, x, shipOrientation);
 
     if (shipOrientation === "row") {
       for (let k = x; k < x + shipsArray[i].length; k++) {
         if (matrixArray[y][k].ship) {
-          console.log("call");
-          console.log(shipsArray[i]);
-          return randomLocationShips(
-            [shipsArray[i], ...shipsArray],
-            fieldForHuman
-          );
+          const arrReturn = shipsArray.slice(i);
+          return randomLocationShips(arrReturn, matrixArray, flag);
         }
       }
+
       for (let j = x; j < x + shipsArray[i].length; j++) {
-        if (!matrixArray[y][j].ship) {
-          let indexElem;
-          y === 0
-            ? (indexElem = String(j))
-            : (indexElem = String(y) + String(j));
-          collection.children[indexElem].classList.add("ship__gamer");
-          matrixArray[y][j].direction = "row";
-          matrixArray[y][j].elem = shipsArray[i][0].elem;
-        }
+        let indexElem;
+        y === 0 ? (indexElem = String(j)) : (indexElem = String(y) + String(j));
+        flag
+          ? $fieldHuman.children[indexElem].classList.add("ship__gamer")
+          : $fieldComputer.children[indexElem].classList.add("ship__computer");
+
+        matrixArray[y][j].direction = "row";
+        matrixArray[y][j].elem = shipsArray[i][0].elem;
       }
       for (let j = x; j <= x + shipsArray[i].length + 1; j++) {
         matrixArray?.[y - 1]?.[j - 1]
           ? (matrixArray[y - 1][j - 1].ship = true)
-          : matrixArray[0][0];
+          : matrixArray[y][x];
         matrixArray?.[y]?.[j - 1]
           ? (matrixArray[y][j - 1].ship = true)
-          : matrixArray[0][0];
+          : matrixArray[y][x];
         matrixArray?.[y + 1]?.[j - 1]
           ? (matrixArray[y + 1][j - 1].ship = true)
-          : matrixArray[0][0];
+          : matrixArray[y][x];
       }
     } else if (shipOrientation === "column") {
       for (let j = y; j < y + shipsArray[i].length; j++) {
         if (matrixArray[j][x].ship) {
-          console.log("call");
-          console.log(shipsArray[i]);
-          return randomLocationShips(
-            [shipsArray[i], ...shipsArray],
-            fieldForHuman
-          );
+          const arrReturn = shipsArray.slice(i);
+          return randomLocationShips(arrReturn, matrixArray, flag);
         }
       }
       for (let j = y; j < y + shipsArray[i].length; j++) {
         if (!matrixArray[j][x].ship) {
           let indexElem;
           j === 0 ? (indexElem = x) : (indexElem = String(j) + String(x));
-          collection.children[indexElem].classList.add("ship__gamer");
+          flag
+            ? $fieldHuman.children[indexElem].classList.add("ship__gamer")
+            : $fieldComputer.children[indexElem].classList.add(
+                "ship__computer"
+              );
+
           matrixArray[j][x].ship = true;
           matrixArray[j][x].direction = "column";
           matrixArray[j][x].elem = shipsArray[i][0].elem;
@@ -190,26 +182,59 @@ const randomLocationShips = (shipsArray, matrixArray) => {
       for (let j = y; j <= y + shipsArray[i].length + 1; j++) {
         matrixArray?.[j - 1]?.[x - 1]
           ? (matrixArray[j - 1][x - 1].ship = true)
-          : matrixArray[0][0];
+          : matrixArray[y][x];
         matrixArray?.[j - 1]?.[x]
           ? (matrixArray[j - 1][x].ship = true)
-          : matrixArray[0][0];
+          : matrixArray[y][x];
         matrixArray?.[j - 1]?.[x + 1]
           ? (matrixArray[j - 1][x + 1].ship = true)
-          : matrixArray[0][0];
+          : matrixArray[y][x];
       }
     }
-    shipsArray.shift();
   }
-  console.log(shipsArray, matrixArray);
+  return matrixArray;
+};
+
+document.onclick = (event) => {
+  console.log(event);
 };
 
 document.onclick = (event) => {
   if (event.target.dataset.manual) {
+    const manualVisualShips = createVisualShips(
+      createDefaultEscadra(),
+      $visualShipEscadraHuman,
+      flagTrue
+    );
   } else if (event.target.dataset.random) {
     $fieldHuman.innerHTML = "";
-    fieldForHuman = createBattleField($fieldHuman, flagTrue);
-    randomLocationShips(manualVisualShips, fieldForHuman);
+    $visualShipEscadraHuman.innerHTML = "";
+    const fieldForHuman = createBattleField($fieldHuman, flagTrue);
+    const manualVisualShips = createVisualShips(
+      createDefaultEscadra(),
+      $visualShipEscadraHuman,
+      flagTrue
+    );
+    const gamerFieldWithShips = randomLocationShips(
+      manualVisualShips,
+      fieldForHuman,
+      flagTrue
+    );
+    console.log(gamerFieldWithShips);
   } else if (event.target.dataset.start) {
+    $fieldComputer.innerHTML = "";
+    $visualShipEscadraComputer.innerHTML = "";
+    const fieldForComputer = createBattleField($fieldComputer, flagFalse);
+    const escadraHiddenForComputer = createVisualShips(
+      createDefaultEscadra(),
+      $visualShipEscadraComputer,
+      flagFalse
+    );
+    const computerFieldWithShips = randomLocationShips(
+      escadraHiddenForComputer,
+      fieldForComputer,
+      flagFalse
+    );
+    console.log(computerFieldWithShips);
   }
 };
