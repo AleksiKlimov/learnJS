@@ -159,3 +159,23 @@ body {
 .row {
   transform: rotate(90deg);
 }
+.miss {
+  width: 20px;
+  height: 20px;
+  border: 0.5px solid blue;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  background: radial-gradient(#000000, #f4fcff);
+}
+.killed {
+  width: 20px;
+  height: 20px;
+  border: 0.5px solid blue;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  background: radial-gradient(#fc0000, #f4fcff);
+}

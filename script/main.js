@@ -7,7 +7,11 @@ const $visualShipEscadraHuman = document.querySelector(
 const $visualShipEscadraComputer = document.querySelector(
   ".seabattle__escadra-computer"
 );
-
+const $blockButton = document.querySelector(".seabattle__block-info-text");
+const hitsComputer = new Map();
+const shotsComputer = [];
+const hitsGamer = new Map();
+const shotsGamer = [];
 const flagTrue = true;
 const flagFalse = false;
 
@@ -98,30 +102,9 @@ const createVisualShips = (escadraShips, $html, flag) => {
   return arrOuterShips;
 };
 //==================================================================
-//manual
 const fieldForHuman = createBattleField($fieldHuman, flagTrue);
-// const manualVisualShips = createVisualShips(
-//   createDefaultEscadra(),
-//   $visualShipEscadraHuman,
-//   flagTrue
-// );
-
-//===================================================================
-//random
-// const randomVarian = createBattleField($fieldHuman, flagTrue);
-// const randomHiddenShips = createVisualShips(
-//   createDefaultEscadra,
-//   $visualShipEscadraHuman,
-//   flagTrue
-// );
-//====================================================================
-//start
+//===============================================================================
 const fieldForComputer = createBattleField($fieldComputer, flagFalse);
-// const escadraHiddenForComputer = createVisualShips(
-//   createDefaultEscadra(),
-//   $visualShipEscadraComputer,
-//   flagFalse
-// );
 //=====================================================================
 const randomLocationShips = (shipsArray, matrixArray, flag) => {
   for (let i = 0; i < shipsArray.length; i++) {
@@ -332,18 +315,33 @@ $visualShipEscadraHuman.onpointerdown = (event) => {
     };
   }
 };
+//====================================wounded==killed============================================================
+const $buttonStart = document.querySelector(".seabattle__button-start");
+const $buttonRandom = document.querySelector(".seabattle__button-random");
+const $buttonManual = document.querySelector(".seabattle__button-manual");
 
+const eventLoop = () => {
+  const y = getRandomMatrixValue(1);
+  const x = getRandomMatrixValue(1);
+  const orientation = getRandomShipOrientation();
+  console.log(y, x, orientation);
+};
+
+$buttonStart.disabled = true;
 document.onclick = (event) => {
+  eventLoop();
   if (event.target.dataset.manual) {
     $fieldHuman.innerHTML = "";
     const fieldForHuman = createBattleField($fieldHuman, flagTrue);
-
     $visualShipEscadraHuman.innerHTML = "";
     const manualVisualShips = createVisualShips(
       createDefaultEscadra(),
       $visualShipEscadraHuman,
       flagTrue
     );
+    console.log(fieldForHuman);
+    $buttonRandom.disabled = true;
+    $buttonStart.disabled = false;
   } else if (event.target.dataset.random) {
     $fieldHuman.innerHTML = "";
     $visualShipEscadraHuman.innerHTML = "";
@@ -359,6 +357,9 @@ document.onclick = (event) => {
       flagTrue
     );
     console.log(gamerFieldWithShips);
+    $buttonManual.disabled = true;
+    $buttonStart.disabled = false;
+    $visualShipEscadraHuman.classList.add("hide");
   } else if (event.target.dataset.start) {
     $fieldComputer.innerHTML = "";
     $visualShipEscadraComputer.innerHTML = "";
@@ -373,6 +374,9 @@ document.onclick = (event) => {
       fieldForComputer,
       flagFalse
     );
-    console.log(computerFieldWithShips);
+    $visualShipEscadraComputer.classList.add("hide");
+    $buttonRandom.disabled = true;
+    $buttonManual.disabled = true;
+    $buttonStart.disabled = true;
   }
 };
