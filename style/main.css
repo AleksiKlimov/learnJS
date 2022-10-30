@@ -83,6 +83,7 @@ body {
   flex-wrap: wrap;
   margin-right: 30px;
   cursor: pointer;
+  position: relative;
 }
 .seabattle__sea-computer {
   max-width: 200px;
@@ -125,6 +126,7 @@ body {
   align-items: center;
   cursor: pointer;
   background: rgb(0, 238, 255);
+  /* position: relative; */
 }
 .cell__container-human {
 }
@@ -154,6 +156,6 @@ body {
   background: rgb(1, 15, 9);
 }
 
-.horizontal {
+.row {
   transform: rotate(90deg);
 }
