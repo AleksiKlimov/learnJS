@@ -97,6 +97,7 @@ body {
   display: flex;
   flex-direction: space-around;
 }
+.seabattle__button-manual-start,
 .seabattle__button-start,
 .seabattle__button-manual,
 .seabattle__button-random {
@@ -170,6 +171,16 @@ body {
   background: radial-gradient(#000000, #f4fcff);
 }
 .wounded {
+  width: 20px;
+  height: 20px;
+  border: 0.5px solid blue;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  background: radial-gradient(#fc0000, #f4fcff);
+}
+.wounder {
   width: 20px;
   height: 20px;
   border: 0.5px solid blue;
