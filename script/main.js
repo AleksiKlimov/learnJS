@@ -8,9 +8,7 @@ const $visualShipEscadraComputer = document.querySelector(
   ".seabattle__escadra-computer"
 );
 const $blockButton = document.querySelector(".seabattle__block-info-text");
-const hitsComputer = new Map();
 const shotsComputer = [];
-const hitsGamer = new Map();
 const shotsGamer = [];
 const flagTrue = true;
 const flagFalse = false;
@@ -106,6 +104,8 @@ const fieldForHuman = createBattleField($fieldHuman, flagTrue);
 //===============================================================================
 const fieldForComputer = createBattleField($fieldComputer, flagFalse);
 //=====================================================================
+
+//===============================================================================
 const randomLocationShips = (shipsArray, matrixArray, flag) => {
   for (let i = 0; i < shipsArray.length; i++) {
     const y = getRandomMatrixValue(shipsArray[i].length);
@@ -128,8 +128,7 @@ const randomLocationShips = (shipsArray, matrixArray, flag) => {
     for (let cy = y - 1; cy < +y + shipsArray[i].length * dy + dx + 1; cy++) {
       for (let cx = x - 1; cx < +x + shipsArray[i].length * dx + dy + 1; cx++) {
         matrixArray?.[cy]?.[cx]
-          ? ((matrixArray[cy][cx].free = false),
-            (matrixArray[cy][cx].ship = true))
+          ? (matrixArray[cy][cx].ship = true)
           : fieldForHuman;
       }
     }
@@ -144,12 +143,21 @@ const randomLocationShips = (shipsArray, matrixArray, flag) => {
         ? (indexElem = String(cx))
         : (indexElem = String(cy) + String(cx));
       flag
+        ? $fieldHuman.children?.[+indexElem]?.classList.remove("cell__gamer")
+        : $fieldComputer.children?.[+indexElem]?.classList.remove(
+            "cell__computer"
+          );
+
+      flag
         ? $fieldHuman.children?.[+indexElem]?.classList.add("ship__gamer")
         : $fieldComputer.children?.[+indexElem]?.classList.add(
             "ship__computer"
           );
       matrixArray[cy][cx].direction = shipOrientation;
       matrixArray[cy][cx].elem = shipsArray[i][0].elem;
+      matrixArray[cy][cx].id = shipsArray[i][0].id;
+      matrixArray[cy][cx].cell = k + 1;
+      matrixArray[cy][cx].length = shipsArray[i].length;
     }
   }
   return matrixArray;
@@ -170,20 +178,37 @@ const examManualLocation = (ship, fieldForHuman, y, x, height) => {
       $visualShipEscadraHuman.append($element),
         ($element.style.position = "static");
       $element.classList.remove("row");
+      document.onpointerdown = null;
+      document.onpointerup = null;
+
       return;
     }
   }
+
   for (let i = 0; i < height; i++) {
     const cx = +x + dx * i;
     const cy = +y + dy * i;
+
+    //==============================================================
     fieldForHuman[cy][cx].direction = direction;
+    fieldForHuman[cy][cx].cell = i + 1;
+    fieldForHuman[cy][cx].length = height;
+    //================
+
+    let indexElem;
+    +cy === 0 && dx
+      ? (indexElem = String(cx))
+      : (indexElem = String(cy) + String(cx));
+    +cy === 0 && dy
+      ? (indexElem = String(cx))
+      : (indexElem = String(cy) + String(cx));
+    $fieldHuman.children?.[+indexElem]?.classList.add("ship__gamer");
+    $element.classList.add("hide");
   }
-  console.log(y, x);
   for (let cy = y - 1; cy < +y + height * dy + dx + 1; cy++) {
     for (let cx = x - 1; cx < +x + height * dx + dy + 1; cx++) {
       fieldForHuman?.[cy]?.[cx]
-        ? ((fieldForHuman[cy][cx].free = false),
-          (fieldForHuman[cy][cx].ship = true))
+        ? (fieldForHuman[cy][cx].ship = true)
         : fieldForHuman;
     }
   }
@@ -252,7 +277,8 @@ $visualShipEscadraHuman.onpointerdown = (event) => {
                 ($VisualShip.style.top = 20 * y + "px"),
                 ($VisualShip.style.left = 20 * x + "px"),
                 (document.onpointermove = null),
-                (document.onkeydown = null);
+                (document.onkeydown = null),
+                ($VisualShip.onpointerup = null);
               return examManualLocation(
                 $VisualShip,
                 fieldForHuman,
@@ -315,21 +341,164 @@ $visualShipEscadraHuman.onpointerdown = (event) => {
     };
   }
 };
-//====================================wounded==killed============================================================
+//====================================miss==killed============================================================
 const $buttonStart = document.querySelector(".seabattle__button-start");
 const $buttonRandom = document.querySelector(".seabattle__button-random");
 const $buttonManual = document.querySelector(".seabattle__button-manual");
+$buttonStart.disabled = true;
 
-const eventLoop = () => {
+//====================================miss==killed============================================================
+const showBoard = (mainArray, y, x, length, dx, dy) => {
+  for (cy = y - 1; cy < +y + length * dy + dx + 1; cy++) {
+    for (cx = x - 1; cx < +x + length * dx + dy + 1; cx++) {
+      if (mainArray?.[cy]?.[cx]) {
+        cy === 0 && dx
+          ? (indexElem = String(cx))
+          : (indexElem = String(cy) + String(cx));
+        cy === 0 && dy
+          ? (indexElem = String(cx))
+          : (indexElem = String(cy) + String(cx));
+        $fieldComputer.children[+indexElem].classList.remove("cell__computer");
+        $fieldComputer.children[+indexElem].classList.add("killed");
+        mainArray[cy][cx].ship = false;
+        mainArray[cy][cx].cell = 0;
+      }
+    }
+  }
+};
+//=================================================================
+//=================================================================
+//=================================================================
+
+const eventLoopComputer = (
+  mainArray,
+  arrayCount,
+  mainArrayHuman,
+  shitsCount
+) => {
+  console.log(mainArray, arrayCount);
   const y = getRandomMatrixValue(1);
   const x = getRandomMatrixValue(1);
-  const orientation = getRandomShipOrientation();
-  console.log(y, x, orientation);
+  const orientation = mainArray?.[y]?.[x].direction;
+  const dx = mainArray?.[y]?.[x].direction === "row";
+  const dy = mainArray?.[y]?.[x].direction === "column";
+  const cell = mainArray?.[y]?.[x].cell;
+  let indexElem;
+  +y === 0 && dx
+    ? (indexElem = String(x))
+    : (indexElem = String(y) + String(x));
+  +y === 0 && dy
+    ? (indexElem = String(y))
+    : (indexElem = String(y) + String(x));
+  const $cellElement =
+    $fieldHuman.children?.[+indexElem].closest(".cell__gamer");
+  const $shipElement =
+    $fieldHuman.children?.[+indexElem].closest(".ship__gamer");
+
+  console.log($cellElement, $shipElement);
+
+  // const $cellElement = event.target.closest(".cell__gamer");
+  // const $shipElement = event.target.closest(".ship__gamer");
+  const length = mainArray?.[y]?.[x].length;
+
+  if ($cellElement?.className === "cell__gamer") {
+    $cellElement.classList.remove("cell__gamer");
+    $cellElement.classList.add("miss");
+  } else if ($shipElement?.className === "ship__computer") {
+    mainArray[y][x].ship = false;
+    $shipElement.classList.remove("ship__computer");
+    $shipElement.classList.add("wounded");
+  }
+  if ($shipElement) {
+    eventLoopComputer(mainArray, arrayCount);
+    arrayCount.push(1);
+    if (arrayCount.length === 20) {
+      alert("game over, win computer");
+    }
+    let outerX = +x + dx * 0 - dx * (cell - 1);
+    let outerY = +y + dy * 0 - dy * (cell - 1);
+    for (let i = 0; i < length; i++) {
+      const cx = +x + dx * i - dx * (cell - 1);
+      const cy = +y + dy * i - dy * (cell - 1);
+      if (mainArray?.[cy]?.[cx]) {
+        if (!mainArray[cy][cx].ship) {
+          count++;
+          console.log(count, length);
+        }
+        if (count === length) {
+          return showBoard(mainArray, outerY, outerX, length, dx, dy);
+        }
+      }
+    }
+    // console.log(mainArray, arrayCount, arrayShipComp);
+  } else if (!dx && !dy) {
+    return eventLoopHuman(mainArrayHuman, shitsCount);
+  }
 };
 
-$buttonStart.disabled = true;
+//=====================================================
+//===================================================
+const eventLoopHuman = (
+  mainArray,
+  arrayCount,
+  mainArrayComputer,
+  countHitsComputer
+) => {
+  $fieldComputer.onclick = (event) => {
+    let count = 0;
+    const x = event.target.dataset.x;
+    const y = event.target.dataset.y;
+    const $cellElement = event.target.closest(".cell__computer");
+    const $shipElement = event.target.closest(".ship__computer");
+    const dx = mainArray?.[y]?.[x].direction === "row";
+    const dy = mainArray?.[y]?.[x].direction === "column";
+    const cell = mainArray?.[y]?.[x].cell;
+    const length = mainArray?.[y]?.[x].length;
+    if (event.target === $cellElement) {
+      $cellElement.classList.remove("cell__computer");
+      $cellElement.classList.add("miss");
+    } else if (event.target === $shipElement) {
+      mainArray[y][x].ship = false;
+      $shipElement.classList.remove("ship__computer");
+      $shipElement.classList.add("wounded");
+    }
+    if ($shipElement) {
+      arrayCount.push(1);
+      if (arrayCount.length === 20) {
+        alert("game over, win gamer");
+      }
+      let outerX = +x + dx * 0 - dx * (cell - 1);
+      let outerY = +y + dy * 0 - dy * (cell - 1);
+      for (let i = 0; i < length; i++) {
+        const cx = +x + dx * i - dx * (cell - 1);
+        const cy = +y + dy * i - dy * (cell - 1);
+        if (mainArray?.[cy]?.[cx]) {
+          if (!mainArray[cy][cx].ship) {
+            count++;
+            console.log(count, length);
+          }
+          if (count === length) {
+            console.log(
+              mainArray?.[y]?.[x].direction,
+              mainArray?.[y]?.[x].ship
+            );
+            return showBoard(mainArray, outerY, outerX, length, dx, dy);
+          }
+        }
+      }
+      // console.log(mainArray, arrayCount, arrayShipComp);
+    } else if (!dx && !dy) {
+      return eventLoopComputer(
+        mainArrayComputer,
+        countHitsComputer,
+        mainArray,
+        arrayCount
+      );
+    }
+  };
+};
+
 document.onclick = (event) => {
-  eventLoop();
   if (event.target.dataset.manual) {
     $fieldHuman.innerHTML = "";
     const fieldForHuman = createBattleField($fieldHuman, flagTrue);
@@ -345,6 +514,8 @@ document.onclick = (event) => {
   } else if (event.target.dataset.random) {
     $fieldHuman.innerHTML = "";
     $visualShipEscadraHuman.innerHTML = "";
+    $fieldComputer.innerHTML = "";
+    $visualShipEscadraComputer.innerHTML = "";
     const fieldForHuman = createBattleField($fieldHuman, flagTrue);
     const manualVisualShips = createVisualShips(
       createDefaultEscadra(),
@@ -356,13 +527,8 @@ document.onclick = (event) => {
       fieldForHuman,
       flagTrue
     );
-    console.log(gamerFieldWithShips);
-    $buttonManual.disabled = true;
-    $buttonStart.disabled = false;
-    $visualShipEscadraHuman.classList.add("hide");
-  } else if (event.target.dataset.start) {
-    $fieldComputer.innerHTML = "";
-    $visualShipEscadraComputer.innerHTML = "";
+    //=============================================================
+    //==========================================================
     const fieldForComputer = createBattleField($fieldComputer, flagFalse);
     const escadraHiddenForComputer = createVisualShips(
       createDefaultEscadra(),
@@ -374,9 +540,22 @@ document.onclick = (event) => {
       fieldForComputer,
       flagFalse
     );
+    const logicHuman = eventLoopHuman(
+      computerFieldWithShips,
+      shotsGamer,
+      gamerFieldWithShips,
+      shotsComputer
+    );
+
+    $buttonManual.disabled = true;
+    $buttonStart.disabled = false;
+    $visualShipEscadraHuman.classList.add("hide");
+    console.log(gamerFieldWithShips);
+  } else if (event.target.dataset.start) {
     $visualShipEscadraComputer.classList.add("hide");
     $buttonRandom.disabled = true;
     $buttonManual.disabled = true;
     $buttonStart.disabled = true;
-  }
+  } // $visualShipEscadraHuman.onpointerdown = null;
 };
+//====================================miss==killed============================================================
