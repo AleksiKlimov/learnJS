@@ -395,23 +395,23 @@ const eventLoopComputer = (
   }
   if ($shipElement) {
     eventLoopComputer(mainArray, arrayCount, mainArrayHuman, shitsCount);
-    arrayCount.push(1);
-    console.log(arrayCount.length);
-    if (arrayCount.length === 20) {
-      alert("game over, win GOD");
-      return (
-        ($fieldHuman.innerHTML = ""),
-        ($fieldComputer.innerHTML = ""),
-        createBattleField($fieldHuman, flagTrue),
-        createBattleField($fieldComputer, flagFalse)
-      );
-    }
     const outerX = +x + dx * 0 - dx * (cell - 1);
     const outerY = +y + dy * 0 - dy * (cell - 1);
     for (let i = 0; i < length; i++) {
       const cx = +x + dx * i - dx * (cell - 1);
       const cy = +y + dy * i - dy * (cell - 1);
       arrayCount.push(1);
+      console.log(arrayCount.length);
+
+      if (arrayCount.length === 20) {
+        alert("game over, win GOD");
+        return (
+          ($fieldHuman.innerHTML = ""),
+          ($fieldComputer.innerHTML = ""),
+          createBattleField($fieldHuman, flagTrue),
+          createBattleField($fieldComputer, flagFalse)
+        );
+      }
       if (mainArray?.[cy]?.[cx]) {
         mainArray[cy][cx].ship = false;
         if (!mainArray[cy][cx].ship) {
@@ -469,7 +469,7 @@ const eventLoopHuman = (
     }
     if ($shipElement) {
       arrayCount.push(1);
-      if (arrayCount.length === 20) {
+      if (arrayCount.length >= 20) {
         alert("game over, win PEOPLE");
         return (
           ($fieldHuman.innerHTML = ""),
