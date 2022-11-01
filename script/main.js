@@ -396,9 +396,9 @@ const eventLoopComputer = (
   if ($shipElement) {
     eventLoopComputer(mainArray, arrayCount, mainArrayHuman, shitsCount);
     arrayCount.push(1);
-    console.log(arrayCount);
+    console.log(arrayCount.length);
     if (arrayCount.length === 20) {
-      alert("game over, win gamer");
+      alert("game over, win GOD");
       return (
         ($fieldHuman.innerHTML = ""),
         ($fieldComputer.innerHTML = ""),
@@ -470,7 +470,7 @@ const eventLoopHuman = (
     if ($shipElement) {
       arrayCount.push(1);
       if (arrayCount.length === 20) {
-        alert("game over, win gamer");
+        alert("game over, win PEOPLE");
         return (
           ($fieldHuman.innerHTML = ""),
           ($fieldComputer.innerHTML = ""),
