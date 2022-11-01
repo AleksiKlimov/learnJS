@@ -369,7 +369,6 @@ const eventLoopComputer = (
   const y = getRandomMatrixValue(1);
   const x = getRandomMatrixValue(1);
   if (mainArray?.[y]?.[x].shit) {
-    console.log(y, x);
     return eventLoopComputer(mainArray, arrayCount, mainArrayHuman, shitsCount);
   }
   mainArray[y][x].shit = true;
@@ -397,10 +396,11 @@ const eventLoopComputer = (
   if ($shipElement) {
     eventLoopComputer(mainArray, arrayCount, mainArrayHuman, shitsCount);
     arrayCount.push(1);
+    console.log(arrayCount);
     if (arrayCount.length === 20) {
+      alert("game over, win gamer");
       return setTimeout(
-        (() => alert("game over, win gamer"),
-        ($fieldHuman.innerHTML = ""),
+        (() => ($fieldHuman.innerHTML = ""),
         ($fieldComputer.innerHTML = ""),
         createBattleField($fieldHuman, flagTrue),
         createBattleField($fieldComputer, flagFalse)),
@@ -412,7 +412,9 @@ const eventLoopComputer = (
     for (let i = 0; i < length; i++) {
       const cx = +x + dx * i - dx * (cell - 1);
       const cy = +y + dy * i - dy * (cell - 1);
+      arrayCount.push(1);
       if (mainArray?.[cy]?.[cx]) {
+        mainArray[cy][cx].ship = false;
         if (!mainArray[cy][cx].ship) {
           count++;
         }
@@ -443,7 +445,6 @@ const eventLoopHuman = (
     let count = 0;
     const x = event.target.dataset.x;
     const y = event.target.dataset.y;
-    console.log(y, x);
     if (mainArray?.[y]?.[x].shit) {
       return eventLoopHuman(
         mainArray,
@@ -470,9 +471,9 @@ const eventLoopHuman = (
     if ($shipElement) {
       arrayCount.push(1);
       if (arrayCount.length === 20) {
+        alert("game over, win gamer");
         return setTimeout(
-          (() => alert("game over, win gamer"),
-          ($fieldHuman.innerHTML = ""),
+          (() => ($fieldHuman.innerHTML = ""),
           ($fieldComputer.innerHTML = ""),
           createBattleField($fieldHuman, flagTrue),
           createBattleField($fieldComputer, flagFalse)),

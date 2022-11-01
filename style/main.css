@@ -144,7 +144,7 @@ body {
   justify-content: center;
   align-items: center;
   cursor: pointer;
-  background: rgb(115, 155, 0); /*255*/
+  background: rgb(115, 255, 0); /*255*/
 }
 .ship__gamer {
   width: 20px;
