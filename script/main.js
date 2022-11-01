@@ -399,12 +399,11 @@ const eventLoopComputer = (
     console.log(arrayCount);
     if (arrayCount.length === 20) {
       alert("game over, win gamer");
-      return setTimeout(
-        (() => ($fieldHuman.innerHTML = ""),
+      return (
+        ($fieldHuman.innerHTML = ""),
         ($fieldComputer.innerHTML = ""),
         createBattleField($fieldHuman, flagTrue),
-        createBattleField($fieldComputer, flagFalse)),
-        6000
+        createBattleField($fieldComputer, flagFalse)
       );
     }
     const outerX = +x + dx * 0 - dx * (cell - 1);
@@ -472,12 +471,11 @@ const eventLoopHuman = (
       arrayCount.push(1);
       if (arrayCount.length === 20) {
         alert("game over, win gamer");
-        return setTimeout(
-          (() => ($fieldHuman.innerHTML = ""),
+        return (
+          ($fieldHuman.innerHTML = ""),
           ($fieldComputer.innerHTML = ""),
           createBattleField($fieldHuman, flagTrue),
-          createBattleField($fieldComputer, flagFalse)),
-          6000
+          createBattleField($fieldComputer, flagFalse)
         );
       }
       const outerX = +x + dx * 0 - dx * (cell - 1);
@@ -512,7 +510,7 @@ const eventLoopHuman = (
     }
   };
 };
-document.onclick = (event) => {
+document.onpointerdown = (event) => {
   if (event.target.dataset.manual === "manual") {
     $fieldHuman.innerHTML = "";
     $visualShipEscadraComputer.innerHTML = "";
